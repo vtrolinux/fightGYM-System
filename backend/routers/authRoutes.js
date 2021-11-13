@@ -43,7 +43,7 @@ router.post('/register', async(req,res)=>{
                 name: newUser.name,
                 id: newUser._id
             },
-            credentials.secret
+            "VamosTodosMorrer"
         )
         res.json({error: null, msg:"voce se cadastrou!",token: token, userId: newUser._id})
     }catch(error){
@@ -78,7 +78,7 @@ const user = await User.findOne({email: email})
             name: user.name,
             id: user._id
         },
-        credentials.secret
+        "VamosTodosMorrer"
     )
     res.json({error: null, msg:"voce está autenticado!",token: token, userId: user._id})
 

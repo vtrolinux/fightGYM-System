@@ -25,7 +25,7 @@ router.get('/:id',verifyToken, async(req,res)=>{
 })
 // update de informacoes do usuario pelo mesmo (+segurança)
 router.patch('/',verifyToken, async(req,res)=>{
-    console.log(req)
+    //console.log(req)
     const token = req.header('auth-token')
     const user = await getUserByToken(token)
 
@@ -36,7 +36,7 @@ router.patch('/',verifyToken, async(req,res)=>{
     //verifica se o ID de usuário é igual ao token ID(prevenir manipulação de token durante requests)
     const userId = user._id.toString()
     if(userId != userReqId){
-        console.log('passei userId != userReqId')
+        console.log('passei userId != userReqId: ' + userId+' != '+ userReqId)
         return res.status(401).json({error: 'Acesso Negado!'})
     }
     //Objeto de update do usuário
@@ -57,8 +57,8 @@ router.patch('/',verifyToken, async(req,res)=>{
         //retorna dado atualizado data:updatedUser
         const updatedUser = await User.findOneAndUpdate({_id: userId},{$set: updateData},{new: true})
         res.json({error:null,msg: 'Dado atualizado com sucesso.', data: updatedUser}) // {new true} retorna os dados atualizados, false retorna antes de atualizar(padrão)
-    }catch(error){
-
+    }catch(err){
+        return res.json({error:'Erro, tente novamente mais tarde'})
     }
 
 })
