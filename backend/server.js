@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 //routers import
 const authRouter = require('./routers/authRoutes')
 const userRouter =  require('./routers/userRoutes')
+const admRouter = require('./routers/admRoutes')
 //middleware
 
 
@@ -23,6 +24,7 @@ app.use(express.static('public'))
 // routers api's
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
+app.use('/api/administration', admRouter)
 //atrelar rotas ao express
 
 app.get('/',(req,res)=>{
