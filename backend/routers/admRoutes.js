@@ -30,4 +30,36 @@ router.post('/products/', verifyToken, verifyFieldADM, async (req, res) => {
     }
 
 })
+//retorna os ultimos produtos registrados
+router.get('/products/', verifyToken, verifyFieldADM, async(req,res) => {
+
+    try {
+        const productList = await Product.find({}).sort([['_id:',-1]])
+        return res.json({error: null, data: productList})
+
+    }catch(err){
+        return res.status(400).json({error: 'Falha ao buscar pro produtos.'})
+    }
+
+})
+// busca por produto especifico mostrando TODAS as informações do produto para o ADM
+router.get('/products/:id',verifyToken, verifyFieldADM, async(req, res) => {
+
+    const prodId = req.params.id
+
+    try {
+        const prodInfo = await Product.findOne({_id: prodId})
+        return res.json({error: null, data: prodInfo})
+
+    }catch(err){
+        return res.status(400).json({error: 'Falha ao buscar informações de produto'})
+    }
+
+})
+router.patch('/products/edit',verifyToken, verifyFieldADM, async(req, res) => {
+    console.log('patch adm: '+req.body)
+    const editProd = {
+        
+    }
+})
 module.exports = router

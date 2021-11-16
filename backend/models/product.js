@@ -6,14 +6,14 @@ const productSchema = new mongoose.Schema({
     categoryProduct: {type: String},
     descriptionProduct: {type: String},
     priceProduct: {type: Number},
-    variations: [{
+    variationsProduct: [{
         color: {type: String},
         size: {type: Number},
         photos: {type: Array},
         priceVar: {type: Number},
         stockNumber: {type: Number}
     }],
-    showShop:{type: Boolean}
+    showShopProduct:{type: Boolean}
 })
 const Product = mongoose.model('Product', productSchema)
 
