@@ -20,6 +20,7 @@ router.post('/products/', verifyToken, verifyFieldADM, async (req, res) => {
         categoryProduct: req.body.categoryProduct,
         descriptionProduct: req.body.descriptionProduct,
         priceProduct: req.body.priceProduct,
+        showShopProduct: req.body.showShopProduct
         //mais info para adicionar[variacoes de produto]
     })
     try {
@@ -56,10 +57,40 @@ router.get('/products/:id',verifyToken, verifyFieldADM, async(req, res) => {
     }
 
 })
-router.patch('/products/edit',verifyToken, verifyFieldADM, async(req, res) => {
-    console.log('patch adm: '+req.body)
+router.patch('/products/',verifyToken, verifyFieldADM, async(req, res) => {
+    console.log('patch adm: '+req.body.idProduct)
+    if(req.body.idProduct =='null' || req.body.nameProduct=='null' || req.body.categoryProduct=='null'|| req.body.descriptionProduct=='null'|| req.body.priceProduct=='null'){
+        return res.status(400).json({error: 'Preencha os campos'})
+    }
     const editProd = {
-        
+        idProduct : req.body.idProduct,
+        nameProduct: req.body.nameProduct,
+        categoryProduct: req.body.categoryProduct,
+        descriptionProduct: req.body.descriptionProduct,
+        priceProduct: req.body.priceProduct,
+        variationsProduct: [],
+    }
+    try {      
+
+        // returns updated data
+        const updatedProduct = await Product.findOneAndUpdate({ idProduct: editProd.idProduct}, { $set: editProd }, {new: true});
+        return res.json({ error: null, msg: "Produto atualizado com sucesso!", data: updatedProduct });
+    
+      } catch (err) {
+    
+        return res.status(400).json({ error: 'Falha ao alterar produto' })
+          
+      }
+
+})
+router.delete('/products/',verifyToken, verifyFieldADM, async(req, res) => {
+    const prodId = req.body.productId
+    console.log('id delete: '+prodId)
+    try{
+        await Product.deleteOne({idProduct: prodId})
+        return res.json({error: null, msg: 'Produto deletado com sucesso.'})
+    }catch(err){
+        return res.status(400).json({error: 'Falha ao deletar produto'})
     }
 })
 module.exports = router
