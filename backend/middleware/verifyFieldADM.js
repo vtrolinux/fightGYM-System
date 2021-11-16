@@ -1,6 +1,6 @@
 const credentials = require('../credentials.json')
 const User = require('../models/user')
-const getUserByToken = require('./get-user-by-token')
+const getUserByToken = require('../helpers/get-user-by-token')
 
 //middleware para verificação de autenticação
 const verifyFieldADM = async (req, res, next)=>{
@@ -14,7 +14,7 @@ const verifyFieldADM = async (req, res, next)=>{
         const userByToken = await getUserByToken(token)
         const userId = userByToken._id.toString()
         //console.log('userId: '+userId)
-        const user = await User.findOne({_id: userId})
+        const user = await User.findOne({_id: userId},{password: 0})
         console.log('verifyfieldADM: '+user)
         if(user._doc.hasOwnProperty("adm") && user._doc.adm === true){           
             console.log('TEM ADM, segue o fluxo')

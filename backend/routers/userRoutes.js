@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
 //middleware de verificação token
-const verifyToken = require('../helpers/check-token')
+const verifyToken = require('../middleware/check-token')
 //helpers
 const getUserByToken = require('../helpers/get-user-by-token')
 

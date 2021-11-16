@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const credentials = require('../credentials.json')
-const verifyToken = require('../helpers/check-token')
-const verifyFieldADM = require('../helpers/verifyFieldADM')
+const verifyToken = require('../middleware/check-token')
+const verifyFieldADM = require('../middleware/verifyFieldADM')
 const Product = require('../models/product')
 //helpers
 const getUserByToken = require('../helpers/get-user-by-token')
