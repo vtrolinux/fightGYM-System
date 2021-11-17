@@ -3,14 +3,19 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const credentials = require('../credentials.json')
+const CreateUserController = require('../controllers/CreateUserController')
+const LoginUserController = require('../controllers/LoginUserController')
 
+router.post('/register', CreateUserController.register)
+router.post('/login', LoginUserController.Login)
 //cadastro de usuario 
+/*
 router.post('/register', async (req, res) => {
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
     const confirmPassword = req.body.confirmPassword
-    console.log(req.body)
+    console.log(req.body.name)
     //check for require
     if (name === null || email === null || password === null || confirmPassword === null) {
         console.log('passei null')
@@ -52,8 +57,9 @@ router.post('/register', async (req, res) => {
     }
 
 })
-
+*/
 // --------------------------------------- login -----------------------------------
+/*
 router.post('/login', async (req, res) => {
 
     const email = req.body.email
@@ -85,5 +91,5 @@ router.post('/login', async (req, res) => {
     return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: user._id })
 
 })
-
+*/
 module.exports = router

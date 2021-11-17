@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 //const credentials = require('./credentials.json')
 //routers import
 const authRouter = require('./routers/authRoutes')
-const userRouter =  require('./routers/userRoutes')
+const userRouter = require('./routers/userRoutes')
 const admRouter = require('./routers/admRoutes')
 const productRouter = require('./routers/productsRoutes')
 //middleware
