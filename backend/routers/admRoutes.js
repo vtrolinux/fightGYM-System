@@ -1,12 +1,15 @@
 const router = require('express').Router()
-const credentials = require('../credentials.json')
 const verifyToken = require('../middleware/check-token')
 const verifyFieldADM = require('../middleware/verifyFieldADM')
 const Product = require('../models/product')
 //helpers
 const getUserByToken = require('../helpers/get-user-by-token')
+const RegisterProduct = require('../controllers/admControllers/RegisterProduct')
+const GetProducts = require('../controllers/admControllers/GetProducts')
 
 //registro de produto por adm
+router.post('/products/', verifyToken, verifyFieldADM, RegisterProduct.registerProduct)
+/*
 router.post('/products/', verifyToken, verifyFieldADM, async (req, res) => {
     console.log(req.body)
 
@@ -31,7 +34,10 @@ router.post('/products/', verifyToken, verifyFieldADM, async (req, res) => {
     }
 
 })
+*/
 //retorna os ultimos produtos registrados
+router.get('/products/', verifyToken, verifyFieldADM, GetProducts.admGetProducts)
+/*
 router.get('/products/', verifyToken, verifyFieldADM, async(req,res) => {
 
     try {
@@ -43,6 +49,7 @@ router.get('/products/', verifyToken, verifyFieldADM, async(req,res) => {
     }
 
 })
+*/
 // busca por produto especifico mostrando TODAS as informações do produto para o ADM
 router.get('/products/:id',verifyToken, verifyFieldADM, async(req, res) => {
 
