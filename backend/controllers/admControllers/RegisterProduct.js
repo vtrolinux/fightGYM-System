@@ -10,7 +10,6 @@ module.exports = class RegisterProduct {
             return res.status(400).json({ error: 'Preencha os campos' })
         }
         const newProduct = new Product({
-            idProduct: req.body.idProduct,
             nameProduct: req.body.nameProduct,
             categoryProduct: req.body.categoryProduct,
             descriptionProduct: req.body.descriptionProduct,
