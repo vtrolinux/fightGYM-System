@@ -23,7 +23,7 @@ router.get('/:id',verifyToken, async(req,res)=>{
     }
     
 })
-// update de informacoes do usuario pelo mesmo (+segurança)
+// update de informacoes do usuario pelo mesmo 
 router.patch('/',verifyToken, async(req,res)=>{
     //console.log(req)
     const token = req.header('auth-token')
