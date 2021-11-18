@@ -1,9 +1,11 @@
 const User = require('../../models/user')
+const getUserByToken = require('../../helpers/get-user-by-token')
+const bcrypt = require('bcrypt')
 
 module.exports = class UpdateUser {
 
     static async updateUserInfo(req, res) {
-        
+
         const token = req.header('auth-token')
         const user = await getUserByToken(token)
 

@@ -1,9 +1,10 @@
 const User = require('../../models/user')
+const getUserByToken = require('../../helpers/get-user-by-token')
 
 module.exports = class InfoUser {
 
     static async getUserInfo(req, res) {
-        
+
         console.log('bati')
         const id = req.params.id
         //pegar id de usuario pelo token
@@ -14,6 +15,7 @@ module.exports = class InfoUser {
         //verifica se o ID de usuário é igual ao token ID      
         if (userId != id) {
             console.log('passei userId != Id: ' + userId + ' != ' + id)
+            //tentativa de violação de acesso, criar relatório, informar administrador do sistema
             return res.status(401).json({ error: 'Acesso Negado!' })
         }
 
