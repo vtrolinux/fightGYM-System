@@ -21,7 +21,7 @@ router.get('/products/', verifyToken, verifyFieldADM, GetProducts.admGetProducts
 router.get('/products/:id',verifyToken, verifyFieldADM, IdGetProduct.getProductById)
 
 //edição de produto
-router.patch('/products/',verifyToken, verifyFieldADM, EditProduct.editProduct)
+router.patch('/products/',verifyToken, verifyFieldADM,upload.fields([{name: 'photos'}]), EditProduct.editProduct)
 
 //remoção de produto
 router.delete('/products/',verifyToken, verifyFieldADM, DeleteProduct.removeProduct)

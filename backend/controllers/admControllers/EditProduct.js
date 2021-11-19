@@ -4,6 +4,12 @@ module.exports = class EditProduct {
     
     static async editProduct(req, res){
 
+      let files = []
+      //verifica se veio arquivos na requisição | *O usuário pode armazenar festas sem fotos
+      if(req.files){
+          files = req.files.photos
+      }
+
     console.log('patch adm: '+req.body._id)
     if(req.body._id =='null' || req.body.nameProduct=='null' || req.body.categoryProduct=='null'|| req.body.descriptionProduct=='null'|| req.body.priceProduct=='null'){
         return res.status(400).json({error: 'Preencha os campos'})
@@ -13,8 +19,19 @@ module.exports = class EditProduct {
         nameProduct: req.body.nameProduct,
         categoryProduct: req.body.categoryProduct,
         descriptionProduct: req.body.descriptionProduct,
-        priceProduct: req.body.priceProduct,
-        variationsProduct: [],
+        priceProduct: req.body.priceProduct,      
+    }
+    // create photos array with path
+    let photos = [];
+
+    if(files && files.length > 0) {    
+
+        files.forEach((photo, i) => {
+        photos[i] = photo.path;
+        });
+
+        editProd.photosProduct = photos;
+
     }
     try {      
 
