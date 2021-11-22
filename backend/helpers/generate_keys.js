@@ -1,5 +1,5 @@
 // usado para gerar a SECRET(env) do JWT
 const crypto = require('crypto')
 const base64url = require('base64url')
-const output = base64url(crypto.randomBytes(256).toString('hex'))
-console.log(output)
+console.log('escolha 1: '+crypto.randomBytes(32).toString('hex'))
+console.log('escolha 2: '+base64url(crypto.randomBytes(32).toString('hex')))

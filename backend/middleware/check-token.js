@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 const credentials = require('../credentials.json')
 
 
@@ -12,7 +13,8 @@ const checkToken = (req, res, next)=>{
     }
     //try valida token efetivo
     try{
-        const verificado = jwt.verify(token, "VamosTodosMorrer")
+        console.log('secret: '+process.env.JWT_SECRET)
+        const verificado = jwt.verify(token, process.env.JWT_SECRET)
         req.user = verificado
         //console.log('req.user: '+verificado)
         next()
