@@ -6,7 +6,7 @@ const getUserByToken = async(token)=>{
     if(!token){
         return res.status(400).json({error: "Acesso negado: token inválido"})
     }
-    const decodificado = jwt.verify(token, "VamosTodosMorrer")
+    const decodificado = jwt.verify(token, process.env.JWT_SECRET)
     console.log('decode: '+decodificado.id)
     
 

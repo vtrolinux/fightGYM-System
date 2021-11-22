@@ -30,7 +30,6 @@ app.use('/api/products', productRouter)
 //atrelar rotas ao express
 
 app.get('/',(req,res)=>{
-    console.log(process.env.SECRET)
     res.json({menssage: 'ok'})
 })
 
