@@ -1,10 +1,5 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const User = require('../models/user')
 require('dotenv').config()
-const { serviceLogin, serviceRegister } = require('../service/AuthServices')
 const AuthService = require('../service/AuthServices')
-
 
 async function Login(req, res) {
 
@@ -14,16 +9,12 @@ async function Login(req, res) {
               
         const AuthServiceInstance = new AuthService()
         const {userId, token, errorMessage} = await AuthServiceInstance.serviceLogin(email,password)
-        console.log('error controller: '+errorMessage)
         if(errorMessage){
-            console.log('tem erro')
             return res.status(400).json({error: errorMessage})
-        }
-        console.log(userId)
-        console.log(token)  
+        } 
 
         return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: userId })
-        //return res.send(Login);
+
     } catch (err) {
         return res.status(400).json( {error: 'Falha de Autenticação'} )
     }
