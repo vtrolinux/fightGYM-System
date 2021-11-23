@@ -1,8 +1,32 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const User = require('../../models/user')
+const User = require('../models/user')
 require('dotenv').config()
+const { serviceLogin, serviceRegister } = require('../service/AuthServices')
 
+const AuthService = require('../service/AuthServices')
+
+
+
+async function Login(req, res) {
+
+    const email = req.body.email
+    const password = req.body.password
+
+    console.log(req.body)
+    try {
+        const AuthServiceInstance = new AuthService()
+        // We only pass the body object, never the req object
+        const {token, user} = await AuthServiceInstance.serviceLogin(email,password)
+
+        return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: user._id })
+        //return res.send(Login);
+    } catch (err) {
+        return res.status(400).json({ error: "erro de login" })
+    }
+}
+module.exports = { Login }
+/*
 module.exports = class AuthController {
 
     static async Login(req, res) {
@@ -31,13 +55,14 @@ module.exports = class AuthController {
                 name: user.name,
                 id: user._id
             },
-            process.env.JWT_SECRET, 
+            process.env.JWT_SECRET,
         )
         return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: user._id })
 
     }
+
     static async register(req, res){
-        
+
         const name = req.body.name
         const email = req.body.email
         const password = req.body.password
@@ -84,3 +109,4 @@ module.exports = class AuthController {
         }
     }
 }
+*/
