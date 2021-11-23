@@ -3,10 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 require('dotenv').config()
 const { serviceLogin, serviceRegister } = require('../service/AuthServices')
-
 const AuthService = require('../service/AuthServices')
-
-
 
 async function Login(req, res) {
 
@@ -15,11 +12,13 @@ async function Login(req, res) {
 
     console.log(req.body)
     try {
+        
         const AuthServiceInstance = new AuthService()
-        // We only pass the body object, never the req object
-        const {token, user} = await AuthServiceInstance.serviceLogin(email,password)
-
-        return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: user._id })
+        
+        const {userId, token} = await AuthServiceInstance.serviceLogin(email,password)
+        console.log(userId)
+        console.log(token)
+        return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: userId })
         //return res.send(Login);
     } catch (err) {
         return res.status(400).json({ error: "erro de login" })

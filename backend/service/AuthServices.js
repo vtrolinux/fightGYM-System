@@ -11,10 +11,11 @@ module.exports = class AuthService {
 
         //check if email exists
         const user = await User.findOne({ email: email })
-        console.log('usuario buscado: '+user)
+        console.log('usuario buscado: '+user._id)
         if (!user) {
+            console.log('!user')
             throw new Error('não há usuário cadastrado com esse email')
-        } else {
+        } 
             //check match senha
             const checkPassword = await bcrypt.compare(password, user.password)
 
@@ -22,7 +23,7 @@ module.exports = class AuthService {
                 console.log('checkMatch senha: ' + checkPassword)
                 throw new Error('Incorrect password')
             }
-        }
+        
         //cria token e autentica
         const token = jwt.sign(
             //payload
