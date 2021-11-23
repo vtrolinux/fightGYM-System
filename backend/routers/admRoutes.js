@@ -10,6 +10,7 @@ const DeleteProduct = require('../controllers/admControllers/DeleteProduct')
 const multer = require('multer')
 const diskStorage = require('../helpers/file-storage')
 const upload = multer({storage: diskStorage})
+const admController = require('../controllers/AdmController')
 
 //registro de produto por adm
 router.post('/products/', verifyToken, verifyFieldADM,upload.fields([{name: "photos"}]), RegisterProduct.registerProduct)
@@ -28,7 +29,9 @@ router.delete('/products/',verifyToken, verifyFieldADM, DeleteProduct.removeProd
 
 //----------------------------------------------------
 //registro de produto por adm
-router.post('/products2/', verifyToken, verifyFieldADM,upload.fields([{name: "photos"}]), RegisterProduct.registerProduct)
+router.post('/products2/', verifyToken, verifyFieldADM,upload.fields([{name: "photos"}]), admController.registerProduct)
+//edição de produto
+router.patch('/products2/',verifyToken, verifyFieldADM,upload.fields([{name: 'photos'}]), admController.editProduct)
 
 
 module.exports = router
