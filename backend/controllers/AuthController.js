@@ -5,6 +5,7 @@ require('dotenv').config()
 const { serviceLogin, serviceRegister } = require('../service/AuthServices')
 const AuthService = require('../service/AuthServices')
 
+
 async function Login(req, res) {
 
     const email = req.body.email
@@ -12,16 +13,22 @@ async function Login(req, res) {
 
     console.log(req.body)
     try {
-        
+              
         const AuthServiceInstance = new AuthService()
-        
-        const {userId, token} = await AuthServiceInstance.serviceLogin(email,password)
+        const {userId, token, erro} = await AuthServiceInstance.serviceLogin(email,password)
         console.log(userId)
         console.log(token)
+        console.log('error controller: '+erro)
+        //console.log('error controller: '+e.message)
+        console.log(erro)
+        if(erro){
+            console.log('tem erro')
+            throw erro
+        }
         return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: userId })
         //return res.send(Login);
     } catch (err) {
-        return res.status(400).json({ error: "erro de login" })
+        return res.status(400).json( {err} )
     }
 }
 module.exports = { Login }
