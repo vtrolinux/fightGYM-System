@@ -30,15 +30,58 @@ module.exports = class AuthService {
                     name: user.name,
                     id: user._id
                 },
-            process.env.JWT_SECRET,
+                process.env.JWT_SECRET,
             )
-            return {
-                userId: user._id,
-                token: token,  
-            }
+
+            return { userId: user._id, token: token}
+
         }catch(err){
             return {errorMessage: 'Falha ao efetuar o Login'}
         }       
+    }
+    
+    async serviceRegister(name, email, password, confirmPassword){
+
+        if (name === null || email === null || password === null || confirmPassword === null) {
+            console.log('passei null')
+            return {errorMessage: 'Preencha os campos'}
+        }
+        if (password != confirmPassword) {
+            return {errorMessage: 'As senhas não conferem'}
+        }
+        //check se usuário já existe
+        const emailExists = await User.findOne({ email: email })
+        if (emailExists) {
+            console.log("O email informado já está em uso")
+            return {errorMessage: 'O email informado já está em uso'}
+        }
+        // create password
+        const salt = await bcrypt.genSalt(12)
+        const passwordHash = await bcrypt.hash(password, salt)
+        console.log(passwordHash)
+        // registro de usuario no sistema
+        const user = new User({
+            name: name,
+            email: email,
+            password: passwordHash
+        })
+        try {
+            const newUser = await user.save()
+            //cria token e autentica
+            const token = jwt.sign(
+                //payload
+                {
+                    name: newUser.name,
+                    id: newUser._id
+                },
+                process.env.JWT_SECRET
+            )
+
+            return {token: token, userId: newUser._id}
+            
+        } catch (err) {
+            return {errorMessage: 'Falha ao Realizar Cadastro!'}
+        }
     }
 }
 
