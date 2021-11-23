@@ -18,10 +18,32 @@ async function registerProduct(req, res){
     }
 
 }
-async function admGetProducts(){
+async function admGetProducts(req, res){
+
+    try{
+        const AdmServicesInstance = new AdmServices()
+        const {productList, errorMessage} = await AdmServicesInstance.serviceGetProducts()
+        if(errorMessage){
+            return res.status(400).json({error: errorMessage})
+        }
+        return res.json({error: null, data: productList})
+    }catch(err){
+        return res.status(400).json({error: 'Falha ao buscar pro produtos.'})
+    }
 
 }
-async function getProductById(){
+async function getProductById(req, res){
+    const prodId = req.params.id
+    try{
+        const AdmServicesInstance = new AdmServices()
+        const {prodInfo, errorMessage} = await AdmServicesInstance.serviceGetPruductId(prodId)
+        if(errorMessage){
+            return res.status(400).json({error: errorMessage})
+        }
+        return res.json({error: null, data: prodInfo})
+    }catch(err){
+        return res.status(400).json({error: 'Falha ao buscar pelo produto.'})
+    }
 
 }
 async function editProduct(req, res){

@@ -32,6 +32,9 @@ router.delete('/products/',verifyToken, verifyFieldADM, DeleteProduct.removeProd
 router.post('/products2/', verifyToken, verifyFieldADM,upload.fields([{name: "photos"}]), admController.registerProduct)
 //edição de produto
 router.patch('/products2/',verifyToken, verifyFieldADM,upload.fields([{name: 'photos'}]), admController.editProduct)
-
+//retorna os ultimos produtos registrados(Todos os produtos)
+router.get('/products2/', verifyToken, verifyFieldADM, admController.admGetProducts)
+// busca por produto especifico mostrando TODAS as informações do produto para o ADM
+router.get('/products2/:id',verifyToken, verifyFieldADM, admController.getProductById)
 
 module.exports = router

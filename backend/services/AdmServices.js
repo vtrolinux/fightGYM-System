@@ -41,6 +41,25 @@ module.exports = class AdmServices{
             return { errorMessage: 'Falha no registro do produto' }
         }
     }
+    async serviceGetProducts(){       
+        try {
+            const productList = await Product.find({}).sort([['_id:',-1]])
+            return {productList: productList}
+    
+        }catch(err){
+            return {errorMessage: 'Falha ao localizar pro produtos.'}
+        }
+    }
+    async serviceGetPruductId(prodId){
+
+        try {
+            const prodInfo = await Product.findOne({_id: prodId})
+            return {prodInfo: prodInfo}
+    
+        }catch(err){
+            return {errorMessage: 'Falha ao buscar informações de produto'}
+        }
+    }
     async serviceEditProduct(req){
 
         let files = []
