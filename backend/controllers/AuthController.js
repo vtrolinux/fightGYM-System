@@ -10,25 +10,22 @@ async function Login(req, res) {
 
     const email = req.body.email
     const password = req.body.password
-
-    console.log(req.body)
     try {
               
         const AuthServiceInstance = new AuthService()
-        const {userId, token, erro} = await AuthServiceInstance.serviceLogin(email,password)
-        console.log(userId)
-        console.log(token)
-        console.log('error controller: '+erro)
-        //console.log('error controller: '+e.message)
-        console.log(erro)
-        if(erro){
+        const {userId, token, errorMessage} = await AuthServiceInstance.serviceLogin(email,password)
+        console.log('error controller: '+errorMessage)
+        if(errorMessage){
             console.log('tem erro')
-            throw erro
+            return res.status(400).json({error: errorMessage})
         }
+        console.log(userId)
+        console.log(token)  
+
         return res.json({ error: null, msg: "voce está autenticado!", token: token, userId: userId })
         //return res.send(Login);
     } catch (err) {
-        return res.status(400).json( {err} )
+        return res.status(400).json( {error: 'Falha de Autenticação'} )
     }
 }
 module.exports = { Login }
