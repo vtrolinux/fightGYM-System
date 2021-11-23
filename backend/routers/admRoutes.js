@@ -26,4 +26,9 @@ router.patch('/products/',verifyToken, verifyFieldADM,upload.fields([{name: 'pho
 //remoção de produto
 router.delete('/products/',verifyToken, verifyFieldADM, DeleteProduct.removeProduct)
 
+//----------------------------------------------------
+//registro de produto por adm
+router.post('/products2/', verifyToken, verifyFieldADM,upload.fields([{name: "photos"}]), RegisterProduct.registerProduct)
+
+
 module.exports = router

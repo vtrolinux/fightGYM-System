@@ -1,5 +1,5 @@
 require('dotenv').config()
-const AuthService = require('../service/AuthServices')
+const AuthService = require('../services/AuthServices')
 
 async function Login(req, res) {
 
