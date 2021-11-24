@@ -62,7 +62,21 @@ async function editProduct(req, res){
         return res.status(400).json({ error: 'Falha na alteração do produto' })
     }
 }
-async function removeProduct(){
+async function removeProduct(req, res){
+    const prodId = req.body._id
+    try{
+
+        const AdmServicesInstance = new AdmServices()
+        const {msg, errorMessage} = await AdmServicesInstance.serviceRemoveProduct(prodId)
+        if(errorMessage){
+            return res.status(400).json({error: errorMessage})
+        }
+
+        return res.json({ error: null, msg: msg })
+
+    }catch(err){
+        return res.status(400).json({ error: 'Falha na remoção do produto' })
+    }
 
 }
 module.exports = {
