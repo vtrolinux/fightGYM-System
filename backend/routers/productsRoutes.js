@@ -1,12 +1,11 @@
 const router = require('express').Router()
-const ListProducts = require('../controllers/productController/ListProducts')
-const GetProduct = require('../controllers/productController/GetProduct')
+const ProductController = require('../controllers/ProductController')
 
 //lista todos os produtos
-router.get('/', ListProducts.listAllProducts)
+router.get('/', ProductController.listAllProducts)
 
 //carrega produto especifico
-router.get('/:id',GetProduct.getProductById)
+router.get('/:id', ProductController.getProductById)
 
 module.exports = router
 
