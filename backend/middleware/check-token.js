@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-
-
-
 //middleware para verificação de autenticação
 const checkToken = (req, res, next)=>{
     const token = req.header('auth-token')

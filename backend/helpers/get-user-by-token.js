@@ -9,7 +9,6 @@ const getUserByToken = async(token)=>{
     const decodificado = jwt.verify(token, process.env.JWT_SECRET)
     console.log('decode: '+decodificado.id)
     
-
     const userId = decodificado.id
     const user = await User.findOne({_id: userId})
     return user
