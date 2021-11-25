@@ -36,7 +36,7 @@ module.exports = class AdmServices{
         })
         try {
             const productSaved = await newProduct.save()
-            return { productSaved: productSaved }
+            return { productSaved }
         } catch (err) {
             return { errorMessage: 'Falha no registro do produto' }
         }
@@ -44,7 +44,7 @@ module.exports = class AdmServices{
     async serviceGetProducts(){       
         try {
             const productList = await Product.find({}).sort([['_id:',-1]])
-            return {productList: productList}
+            return {productList}
     
         }catch(err){
             return {errorMessage: 'Falha ao localizar pro produtos.'}
@@ -54,7 +54,7 @@ module.exports = class AdmServices{
 
         try {
             const prodInfo = await Product.findOne({_id: prodId})
-            return {prodInfo: prodInfo}
+            return { prodInfo }
     
         }catch(err){
             return {errorMessage: 'Falha ao buscar informações de produto'}
@@ -94,7 +94,7 @@ module.exports = class AdmServices{
       try {      
           // returns updated data
           const updatedProduct = await Product.findOneAndUpdate({ _id: editProd._id}, { $set: editProd }, {new: true});
-          return { updatedProduct: updatedProduct }
+          return { updatedProduct }
      
         } catch (err) {
       
@@ -116,6 +116,6 @@ module.exports = class AdmServices{
         } catch (err) {
             return { errorMessage: 'Falha ao deletar produto' }
         }
-        
+
     }
 }
