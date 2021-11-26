@@ -15,7 +15,8 @@
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-sequence": "^5.3.1",
     "multer": "^1.4.3",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "redis": "^4.0.0"
   },
   "devDependencies": {},
   "scripts": {
