@@ -3,7 +3,6 @@ const express = require('express')
 const Bodyparser = require('body-parser') 
 const cors = require('cors') 
 const mongoose = require('mongoose')
-//const credentials = require('./credentials.json')
 //routers import
 const authRouter = require('./routers/authRoutes')
 const userRouter = require('./routers/userRoutes')

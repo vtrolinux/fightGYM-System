@@ -1,4 +1,3 @@
-const credentials = require('../credentials.json')
 const User = require('../models/user')
 const getUserByToken = require('../helpers/get-user-by-token')
 
@@ -6,7 +5,6 @@ const getUserByToken = require('../helpers/get-user-by-token')
 const verifyFieldADM = async (req, res, next)=>{
     const token = req.header('auth-token')
     //console.log('token: '+ token)
-    //console.log(credentials.secret)
     if(!token){
         return res.status(401).json({error: "Acesso Negado"})
     }
