@@ -1,20 +1,31 @@
 const Product = require('../models/product')
+const redisDB = require('../configurations/redis')
 
 module.exports = class ProductServices{
     constructor(){}
 
-    async serviceListAllProducts(){
-
-        //filtro de categorias?
-
+    async serviceListAllProducts(){    
+        
         try {
+            
+            const redisCacheProducts = await redisDB.get('products')
+            
+            if(redisCacheProducts != 'Error' && redisCacheProducts){
+                
+                const produtos = JSON.parse(redisCacheProducts)
+                
+                return { produtos }
+            }
+            
+            const produtos = await Product.find({ showShopProduct: true }, { showShopProduct: 0 }) 
 
-            const produtos = await Product.find({ showShopProduct: true }, { showShopProduct: 0 })
+            redisDB.set('products',JSON.stringify(produtos)) 
+          
             return { produtos }
         
         } catch (err) {
             return { errorMessage: 'falha ao buscar por produtos' }
-        }
+        }        
 
     }
 
@@ -36,4 +47,5 @@ module.exports = class ProductServices{
         }
 
     }
+    
 }

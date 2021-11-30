@@ -3,12 +3,14 @@ const ProductServices = require('../services/ProductServices')
 async function listAllProducts(req, res){
 
     try{
+
         const ProductServicesInstance = new ProductServices()
         const {produtos, errorMessage} = await ProductServicesInstance.serviceListAllProducts()
         if(errorMessage){
             return res.json({ error: errorMessage })
         }
         return res.json({ error: null, data: produtos })
+ 
     }catch(err){
         return res.status(400).json({ error: 'falha ao buscar por produto' })
     }

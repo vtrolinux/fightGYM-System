@@ -28,8 +28,10 @@ app.use('/api/administration', admRouter)
 app.use('/api/products', productRouter)
 //atrelar rotas ao express
 
-app.get('/',(req,res)=>{
-    res.json({menssage: 'ok'})
+app.get('/',async (req,res)=>{
+    
+    //await setRedis('chave', 'valor')
+    res.json({menssage: 'okf'})
 })
 
 app.listen(port,()=>{
@@ -43,3 +45,4 @@ mongoose.connect(`mongodb://localhost/${nomeBanco}`,
  // useFindAndModify: false,
   useUnifiedTopology: true
 }) 
+
