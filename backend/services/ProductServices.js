@@ -1,5 +1,5 @@
 const Product = require('../models/product')
-const redisDB = require('../configurations/redis')
+const redisDB = require('../database/ioRedis')
 
 module.exports = class ProductServices{
     constructor(){}
@@ -7,20 +7,20 @@ module.exports = class ProductServices{
     async serviceListAllProducts(){    
         
         try {
-            
-            const redisCacheProducts = await redisDB.get('products')
+
+            const redisCacheProducts = await redisDB.get("products")
             
             if(redisCacheProducts != 'Error' && redisCacheProducts){
-                
+                console.log('cache')
                 const produtos = JSON.parse(redisCacheProducts)
-                
+  
                 return { produtos }
             }
-            
+
             const produtos = await Product.find({ showShopProduct: true }, { showShopProduct: 0 }) 
 
-            redisDB.set('products',JSON.stringify(produtos)) 
-          
+            await redisDB.set("products",JSON.stringify(produtos)) 
+            console.log('banco')
             return { produtos }
         
         } catch (err) {

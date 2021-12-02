@@ -12,7 +12,7 @@ const productRouter = require('./routers/productsRoutes')
 
 
 //config
-
+require('dotenv').config()
 const port = 3000
 const nomeBanco = 'bancoFight'
 const app = express()

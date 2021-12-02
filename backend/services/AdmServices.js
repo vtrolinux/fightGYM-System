@@ -41,7 +41,7 @@ module.exports = class AdmServices{
             return { errorMessage: 'Falha no registro do produto' }
         }
     }
-    async serviceGetProducts(){       
+    async serviceGetProducts(){
         try {
             const productList = await Product.find({}).sort([['_id:',-1]])
             return {productList}
