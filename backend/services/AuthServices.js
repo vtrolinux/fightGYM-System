@@ -49,12 +49,14 @@ module.exports = class AuthService {
         if (password != confirmPassword) {
             return {errorMessage: 'As senhas não conferem'}
         }
+        
         //check se usuário já existe
         const emailExists = await User.findOne({ email: email })
         if (emailExists) {
             console.log("O email informado já está em uso")
             return {errorMessage: 'O email informado já está em uso'}
         }
+        
         // create password
         const salt = await bcrypt.genSalt(12)
         const passwordHash = await bcrypt.hash(password, salt)
