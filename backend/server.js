@@ -13,8 +13,9 @@ const productRouter = require('./routers/productsRoutes')
 
 //config
 require('dotenv').config()
-const port = 3000
-const nomeBanco = 'bancoFight'
+const port = process.env.EXPRESS_PORT
+const nomeBanco = process.env.MONGO_DB_NAME
+const enderecoBanco = process.env.MONGO_DB_ADDRESS
 const app = express()
 
 
@@ -31,7 +32,7 @@ app.use('/api/products', productRouter)
 app.get('/',async (req,res)=>{
     
     //await setRedis('chave', 'valor')
-    res.json({menssage: 'okf'})
+    res.json({message: 'okf'})
 })
 
 app.listen(port,()=>{
@@ -39,7 +40,7 @@ app.listen(port,()=>{
 })
 
 //conexao mongodb
-mongoose.connect(`mongodb://localhost/${nomeBanco}`, 
+mongoose.connect(`mongodb://${enderecoBanco}/${nomeBanco}`, 
 {
   useNewUrlParser: true,
  // useFindAndModify: false,

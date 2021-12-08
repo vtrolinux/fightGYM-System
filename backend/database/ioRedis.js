@@ -2,8 +2,8 @@ const Redis = require("ioredis");
 const util = require("util");
 
 const client = new Redis({
-    port: 6379, // Redis port
-    host: "127.0.0.1", // Redis host
+    port: process.env.REDIS_PORT, // Redis port
+    host: process.env.REDIS_ADDRESS, // Redis host
     //family: 4, // 4 (IPv4) or 6 (IPv6)
     //password: "auth",
     //db: 0,
