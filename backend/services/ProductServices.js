@@ -1,5 +1,5 @@
 const Product = require('../models/product')
-const redisDB = require('../database/ioRedis')
+const redisDB = require('../db/ioRedis')
 
 module.exports = class ProductServices{
     constructor(){}

@@ -2,7 +2,6 @@
 const express = require('express')
 const Bodyparser = require('body-parser') 
 const cors = require('cors') 
-const mongoose = require('mongoose')
 //routers import
 const authRouter = require('./routers/authRoutes')
 const userRouter = require('./routers/userRoutes')
@@ -14,10 +13,7 @@ const productRouter = require('./routers/productsRoutes')
 //config
 require('dotenv').config()
 const port = process.env.EXPRESS_PORT
-const nomeBanco = process.env.MONGO_DB_NAME
-const enderecoBanco = process.env.MONGO_DB_ADDRESS
 const app = express()
-
 
 app.use(cors())
 app.use(express.json())
@@ -39,11 +35,4 @@ app.listen(port,()=>{
     console.log(`SERVIDOR SENDO EXECUTADO NA PORTA ${port}`)
 })
 
-//conexao mongodb
-mongoose.connect(`mongodb://${enderecoBanco}/${nomeBanco}`, 
-{
-  useNewUrlParser: true,
- // useFindAndModify: false,
-  useUnifiedTopology: true
-}) 
 

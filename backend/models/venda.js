@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('../db/mongooseConnection')
 
 const vendaSchema = new mongoose.Schema({
     idVenda: {type: Number},

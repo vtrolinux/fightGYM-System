@@ -1,4 +1,3 @@
-require('dotenv').config()
 const AdmServices = require('../services/AdmServices')
 
 async function registerProduct(req, res){
