@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+const createToken = require('../helpers/create-token')
 const jwt = require('jsonwebtoken')
 
 module.exports = class AuthService {
@@ -10,49 +11,30 @@ module.exports = class AuthService {
         //check if email exists
         const user = await User.findOne({ email: email })
 
-        try{
             if(!user){
-                return {errorMessage: 'não há usuário cadastrado com esse email'}
+                throw ({ status: 422, code: 'EMAIL_NOT_EXISTS', message: 'nao existe usuario cadastrado com este email.' })
             }
 
             //check match senha
             const checkPassword = await bcrypt.compare(password, user.password)
 
             if (!checkPassword) {
-                return {errorMessage: 'senha inválida'}
+                throw ({ status: 422, code: 'INVALID_PASSWORD', message: 'senha inválida.' })
             }
             //cria token e autentica
-            const token = jwt.sign(
-                //payload
-                {
-                    name: user.name,
-                    id: user._id
-                },
-                process.env.JWT_SECRET,
-            )
+            const {token, userId} = await createToken(user)
 
-            return { userId: user._id, token: token}
-
-        }catch(err){
-            return {errorMessage: 'Falha ao efetuar o Login'}
-        }       
+            return {token, userId}
+     
     }
     
-    async serviceRegister(name, email, password, confirmPassword){
-
-        if (name === null || email === null || password === null || confirmPassword === null) {
-            console.log('passei null')
-            return {errorMessage: 'Preencha os campos'}
-        }
-        if (password != confirmPassword) {
-            return {errorMessage: 'As senhas não conferem'}
-        }
-        
+    async serviceRegister(name, email, password){
+       
         //check se usuário já existe
         const emailExists = await User.findOne({ email: email })
         if (emailExists) {
             console.log("O email informado já está em uso")
-            return {errorMessage: 'O email informado já está em uso'}
+            throw ({ status: 422, code: 'EMAIL_EXISTS', message: 'O email informado já está em uso.' })
         }
         
         // create password
@@ -65,23 +47,18 @@ module.exports = class AuthService {
             email: email,
             password: passwordHash
         })
-        try {
+        
+        try {           
             const newUser = await user.save()
-            //cria token e autentica
-            const token = jwt.sign(
-                //payload
-                {
-                    name: newUser.name,
-                    id: newUser._id
-                },
-                process.env.JWT_SECRET
-            )
-
-            return {token: token, userId: newUser._id}
             
+            //cria token e autentica
+            const {token, userId} = await createToken(newUser)
+
+            return {token, userId}
         } catch (err) {
-            return {errorMessage: 'Falha ao Realizar Cadastro!'}
+            throw ({ status: 422, code: 'USER_ERROR_REGISTER', message: 'Erro ao registrar usuario.' })
         }
+                      
     }
 }
 

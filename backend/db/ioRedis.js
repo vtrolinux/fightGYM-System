@@ -8,6 +8,8 @@ const client = new Redis({
     //password: "auth",
     //db: 0,
   });
+  
+client.connect(function () { console.log('redis conectado!') })
 
 function get(value) {
   const syncRedisGet = util.promisify(client.get).bind(client);
