@@ -1,19 +1,30 @@
 const AdmServices = require('../services/AdmServices')
+const administrationValidators = require('../validations/administrationValidators')
 
 async function registerProduct(req, res){
-
+    
+    const {nameProduct, categoryProduct, descriptionProduct, priceProduct, showShopProduct} = req.body
+    const images = req.files
+    
+    console.log(req.body)
+    //input validation
+    try {
+        administrationValidators.registerProduct(nameProduct, categoryProduct, priceProduct)
+    } catch (err) {
+        return res.status(422).json({ error: err.message })
+    }
+    //call service
     try{
 
         const AdmServicesInstance = new AdmServices()
-        const {productSaved, errorMessage} = await AdmServicesInstance.serviceRegisterProduct(req)
-        if(errorMessage){
-            return res.status(400).json({error: errorMessage})
-        }
-
-        return res.json({ error: null, msg: "Produto Cadastrado com Sucesso", data: productSaved })
+        const {productSaved} = await AdmServicesInstance.serviceRegisterProduct(nameProduct, categoryProduct, descriptionProduct, priceProduct, showShopProduct, images)
+        return res.json({ error: null, message: "Produto Cadastrado com Sucesso", data: productSaved })
 
     }catch(err){
-        return res.status(400).json({ error: 'Falha no registro do produto' })
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 
 }

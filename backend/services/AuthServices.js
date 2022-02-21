@@ -1,7 +1,6 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const createToken = require('../helpers/create-token')
-const jwt = require('jsonwebtoken')
 
 module.exports = class AuthService {
     constructor(){}

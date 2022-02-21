@@ -4,7 +4,7 @@ const getUserByToken = require('../helpers/get-user-by-token')
 //middleware para verificação de autenticação
 const verifyFieldADM = async (req, res, next)=>{
     const token = req.header('auth-token')
-    //console.log('token: '+ token)
+    console.log('token: '+ token)
     if(!token){
         return res.status(401).json({error: "Acesso Negado"})
     }

@@ -3,42 +3,35 @@ const Product = require('../models/product')
 module.exports = class AdmServices{
     constructor(){}
 
-    async serviceRegisterProduct(req){
-
-        console.log(req.body)
-        let files = []
-        //verifica se veio arquivos na requisição | *O usuário pode armazenar festas sem fotos
-        if (req.files) {
-            console.log('tem fotos')
-            files = req.files.photos
-        }
+    async serviceRegisterProduct(nameProduct, categoryProduct, descriptionProduct, priceProduct, showShopProduct, images){
+        console.log(images)
         //salva os caminhos das fotos do upload no backend
         let photos = []
-        if (files && files.length > 0) {
+        if (images && images.length > 0) {
 
-            files.forEach((PHOTO, i) => {
-                photos[i] = PHOTO.path
+            images.forEach((PHOTO, i) => {
+                photos[i] = PHOTO.filename
                 console.log('path foto: ' + photos[i])
             })
 
         }
-        if (req.body.nameProduct === 'null' || req.body.categoryProduct === 'null' || req.body.descriptionProduct === 'null' || req.body.priceProduct === 'null') {
-            return { errorMessage: 'Preencha os campos' }
-        }
+
+        if(!showShopProduct){ showShopProduct = false } //caso no registro do produto nao seja informado
+
         const newProduct = new Product({
-            nameProduct: req.body.nameProduct,
-            categoryProduct: req.body.categoryProduct,
-            descriptionProduct: req.body.descriptionProduct,
-            priceProduct: req.body.priceProduct,
+            nameProduct,
+            categoryProduct,
+            descriptionProduct,
+            priceProduct,
             photosProduct: photos,
-            showShopProduct: req.body.showShopProduct
+            showShopProduct
             //mais info para adicionar[variacoes de produto]
         })
         try {
             const productSaved = await newProduct.save()
             return { productSaved }
         } catch (err) {
-            return { errorMessage: 'Falha no registro do produto' }
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Ocorreu um erro, talvez o serviço esteja indisponivel, tente mais tarde.' })
         }
     }
     async serviceGetProducts(){
