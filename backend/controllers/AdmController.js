@@ -32,13 +32,14 @@ async function admGetProducts(req, res){
 
     try{
         const AdmServicesInstance = new AdmServices()
-        const {productList, errorMessage} = await AdmServicesInstance.serviceGetProducts()
-        if(errorMessage){
-            return res.status(400).json({error: errorMessage})
-        }
+        const {productList} = await AdmServicesInstance.serviceGetProducts()
+
         return res.json({error: null, data: productList})
     }catch(err){
-        return res.status(400).json({error: 'Falha ao buscar pro produtos.'})
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 
 }

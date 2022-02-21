@@ -40,7 +40,7 @@ module.exports = class AdmServices{
             return {productList}
     
         }catch(err){
-            return {errorMessage: 'Falha ao localizar pro produtos.'}
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Falha ao localizar pro produtos.' })
         }
     }
     async serviceGetPruductId(prodId){
