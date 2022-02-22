@@ -12,6 +12,14 @@ const registerProduct = (nameProduct, categoryProduct, priceProduct) => {
     }
 }
 
+const paramIdCheck = (prodId) => {
+    //estrutura de 24 bytes de _id do mongo
+    if(prodId.length != 24){
+        throw new Error('ID nao informado ou invalido.')
+    }
+}
+
 module.exports = {
-    registerProduct
+    registerProduct,
+    paramIdCheck
 }

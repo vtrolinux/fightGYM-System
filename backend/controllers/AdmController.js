@@ -45,15 +45,23 @@ async function admGetProducts(req, res){
 }
 async function getProductById(req, res){
     const prodId = req.params.id
+    //input validation
+    try {
+        administrationValidators.paramIdCheck(prodId)
+    } catch (err) {
+        return res.status(422).json({ error: err.message })
+    }
+
     try{
         const AdmServicesInstance = new AdmServices()
-        const {prodInfo, errorMessage} = await AdmServicesInstance.serviceGetPruductId(prodId)
-        if(errorMessage){
-            return res.status(400).json({error: errorMessage})
-        }
-        return res.json({error: null, data: prodInfo})
+        const {prodInfo} = await AdmServicesInstance.serviceGetPruductId(prodId)
+
+        return res.json({error: null, prod: prodInfo})
     }catch(err){
-        return res.status(400).json({error: 'Falha ao buscar pelo produto.'})
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 
 }
