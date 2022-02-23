@@ -19,7 +19,7 @@ const paramIdValidator = (prodId) => {
     }
 }
 
-const updateValidator = (bodyId) => {
+const mongoIdValidator = (bodyId) => {
     if(bodyId.length != 24){
         throw new Error('ID nao informado ou invalido.')
     }
@@ -28,5 +28,5 @@ const updateValidator = (bodyId) => {
 module.exports = {
     registerValidator,
     paramIdValidator,
-    updateValidator
+    mongoIdValidator
 }

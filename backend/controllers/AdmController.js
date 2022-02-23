@@ -71,7 +71,7 @@ async function editProduct(req, res){
     const images = req.files
 
     try {
-        administrationValidators.updateValidator(_id)
+        administrationValidators.mongoIdValidator(_id)
     } catch (err) {
         return res.status(422).json({ error: err.message })
     }
@@ -92,18 +92,25 @@ async function editProduct(req, res){
 }
 async function removeProduct(req, res){
     const prodId = req.body._id
+
+    try {
+        administrationValidators.mongoIdValidator(prodId)
+    } catch (err) {
+        return res.status(422).json({ error: err.message })
+    }
+
     try{
 
         const AdmServicesInstance = new AdmServices()
-        const {msg, errorMessage} = await AdmServicesInstance.serviceRemoveProduct(prodId)
-        if(errorMessage){
-            return res.status(400).json({error: errorMessage})
-        }
+        await AdmServicesInstance.serviceRemoveProduct(prodId)
 
-        return res.json({ error: null, msg: msg })
+        return res.json({ error: null, message: 'Produto removido com sucesso' })
 
     }catch(err){
-        return res.status(400).json({ error: 'Falha na remoção do produto' })
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 
 }

@@ -85,17 +85,17 @@ module.exports = class AdmServices {
     }
     async serviceRemoveProduct(prodId) {
 
-        console.log('id delete service: ' + prodId)
+        console.log('id delete product: ' + prodId)
 
         try {
             const prod = await Product.findOne({ _id: prodId })
             if (!prod) {
-                return { errorMessage: 'Esse Produto não existe' }
+                throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Esse Produto não existe' })
             }
             await Product.deleteOne({ _id: prodId })
-            return { msg: 'Produto deletado com sucesso.' }
+            
         } catch (err) {
-            return { errorMessage: 'Falha ao deletar produto' }
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Falha ao remover produto' })
         }
 
     }
