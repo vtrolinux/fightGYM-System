@@ -1,5 +1,6 @@
 const AdmServices = require('../services/AdmServices')
 const administrationValidators = require('../validations/administrationValidators')
+const inputValidators = require('../validations/inputValidators')
 
 async function registerProduct(req, res){
     
@@ -47,7 +48,7 @@ async function getProductById(req, res){
     const prodId = req.params.id
     //input validation
     try {
-        administrationValidators.paramIdValidator(prodId)
+        inputValidators.paramIdValidator(prodId)
     } catch (err) {
         return res.status(422).json({ error: err.message })
     }
@@ -71,7 +72,7 @@ async function editProduct(req, res){
     const images = req.files
 
     try {
-        administrationValidators.mongoIdValidator(_id)
+        inputValidators.mongoIdValidator(_id)
     } catch (err) {
         return res.status(422).json({ error: err.message })
     }
@@ -94,7 +95,7 @@ async function removeProduct(req, res){
     const prodId = req.body._id
 
     try {
-        administrationValidators.mongoIdValidator(prodId)
+        inputValidators.mongoIdValidator(prodId)
     } catch (err) {
         return res.status(422).json({ error: err.message })
     }

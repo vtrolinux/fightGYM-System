@@ -24,7 +24,7 @@ module.exports = class ProductServices{
             return { produtos }
         
         } catch (err) {
-            return { errorMessage: 'falha ao buscar por produtos' }
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'falha ao buscar por produtos' })
         }        
 
     }
@@ -36,14 +36,12 @@ module.exports = class ProductServices{
             const produto = await Product.findOne({ _id: id, showShopProduct: true }, { showShopProduct: 0 })
             console.log(produto)
             if (produto === null) {
-                return { errorMessage: 'Produto não disponível' }
+                throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Produto não disponível' })
             }
             return { produto }
 
         } catch (err) {
-
-            return { errorMessage: 'falha ao buscar por produto' }
-
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'falha ao buscar po produto' })
         }
 
     }

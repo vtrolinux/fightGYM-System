@@ -1,18 +1,20 @@
 const ProductServices = require('../services/ProductServices')
+const inputValidators = require('../validations/inputValidators')
 
 async function listAllProducts(req, res){
 
     try{
 
         const ProductServicesInstance = new ProductServices()
-        const {produtos, errorMessage} = await ProductServicesInstance.serviceListAllProducts()
-        if(errorMessage){
-            return res.json({ error: errorMessage })
-        }
+        const {produtos} = await ProductServicesInstance.serviceListAllProducts()
+
         return res.json({ error: null, data: produtos })
  
     }catch(err){
-        return res.status(400).json({ error: 'falha ao buscar por produto' })
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 
 }
@@ -20,15 +22,21 @@ async function getProductById(req, res){
 
     const id = req.params.id
 
+    try {
+        inputValidators.paramIdValidator(id)
+    } catch (err) {
+        return res.status(422).json({ error: err.message })
+    }
     try{
         const ProductServicesInstance = new ProductServices()
-        const {produto, errorMessage} = await ProductServicesInstance.serviceGetProductById(id)
-        if(errorMessage){
-            return res.json({ error: errorMessage })
-        }
+        const {produto} = await ProductServicesInstance.serviceGetProductById(id)
+
         return res.json({ error: null, data: produto })
     }catch(err){
-        return res.status(400).json({ error: 'falha ao buscar por produto' })
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 
 }
