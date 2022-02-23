@@ -1,6 +1,6 @@
 const validator = require('validator')
 
-const registerProduct = (nameProduct, categoryProduct, priceProduct) => {
+const registerValidator = (nameProduct, categoryProduct, priceProduct) => {
     if(!nameProduct){
         throw new Error('O produto deve ter um nome.')
     }
@@ -12,14 +12,21 @@ const registerProduct = (nameProduct, categoryProduct, priceProduct) => {
     }
 }
 
-const paramIdCheck = (prodId) => {
+const paramIdValidator = (prodId) => {
     //estrutura de 24 bytes de _id do mongo
     if(prodId.length != 24){
         throw new Error('ID nao informado ou invalido.')
     }
 }
 
+const updateValidator = (bodyId) => {
+    if(bodyId.length != 24){
+        throw new Error('ID nao informado ou invalido.')
+    }
+}
+
 module.exports = {
-    registerProduct,
-    paramIdCheck
+    registerValidator,
+    paramIdValidator,
+    updateValidator
 }

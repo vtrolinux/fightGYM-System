@@ -9,7 +9,7 @@ async function registerProduct(req, res){
     console.log(req.body)
     //input validation
     try {
-        administrationValidators.registerProduct(nameProduct, categoryProduct, priceProduct)
+        administrationValidators.registerValidator(nameProduct, categoryProduct, priceProduct)
     } catch (err) {
         return res.status(422).json({ error: err.message })
     }
@@ -47,7 +47,7 @@ async function getProductById(req, res){
     const prodId = req.params.id
     //input validation
     try {
-        administrationValidators.paramIdCheck(prodId)
+        administrationValidators.paramIdValidator(prodId)
     } catch (err) {
         return res.status(422).json({ error: err.message })
     }
@@ -67,18 +67,27 @@ async function getProductById(req, res){
 }
 async function editProduct(req, res){
 
+    const { _id, nameProduct, categoryProduct, descriptionProduct, priceProduct} = req.body
+    const images = req.files
+
+    try {
+        administrationValidators.updateValidator(_id)
+    } catch (err) {
+        return res.status(422).json({ error: err.message })
+    }
+
     try{
 
         const AdmServicesInstance = new AdmServices()
-        const {updatedProduct, errorMessage} = await AdmServicesInstance.serviceEditProduct(req)
-        if(errorMessage){
-            return res.status(400).json({error: errorMessage})
-        }
+        const {updatedProduct} = await AdmServicesInstance.serviceEditProduct(_id, nameProduct, categoryProduct, descriptionProduct, priceProduct, images)
 
-        return res.json({ error: null, msg: "Produto Alterado com Sucesso", data: updatedProduct })
+        return res.json({ error: null, message: "Produto Alterado com Sucesso", prod: updatedProduct })
 
     }catch(err){
-        return res.status(400).json({ error: 'Falha na alteração do produto' })
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 }
 async function removeProduct(req, res){
