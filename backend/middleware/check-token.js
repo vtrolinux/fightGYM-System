@@ -15,7 +15,7 @@ const checkToken = (req, res, next)=>{
         
         next()
     }catch(error){
-        res.status(400).json({error: 'acesso negado: token inválido.'})
+        res.status(400).json({ error: 'acesso negado: token inválido.' })
     }
 }
 module.exports = checkToken

@@ -8,32 +8,27 @@ module.exports = class UserServices{
     async serviceGetUserInfo(id, token) {
         console.log('bati user service')
         console.log('id: '+id)
-      /*  const id = req.params.id
-        console.log('bati')
-        
-        //pegar id de usuario pelo token
-        const token = req.header('auth-token')
-        */
+ 
         const user = await getUserByToken(token)
         const userId = user._id.toString()
 
         //verifica se o ID de usuário é igual ao token ID      
         if (userId != id) {
-            console.log('passei userId != Id: ' + userId + ' != ' + id)
-            //tentativa de violação de acesso, criar relatório, informar administrador do sistema
-            return { errorMessage: 'Acesso Negado!' }
+            console.log('-> violacao de acesso: userId != Id: ' + userId + ' != ' + id)
+            //tentativa de violação de acesso, criar relatório, informar administrador do sistema, email
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Acesso não autorizado!' })
         }
 
         try {
 
             console.log(id)
+            // nao retornar senha 
             const user = await User.findOne({ _id: id }, { password: 0 })
             console.log(user)
             return { user }
-            // nao retornar senha na busca
-            // implementar mais filtros para garantir que o usuário consiga ver as informações apenas referentes ao SEU ID
+            
         } catch (err) {
-            return { errorMessage: 'usuário não encontrado!' }
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'usuário não encontrado' })
         }
     }
     async serviceUserUpdate(token, body){

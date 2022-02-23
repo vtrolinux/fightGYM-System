@@ -12,7 +12,6 @@ const registerValidator = (nameProduct, categoryProduct, priceProduct) => {
     }
 }
 
-
 module.exports = {
     registerValidator
 }
