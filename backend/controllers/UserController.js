@@ -6,7 +6,7 @@ async function getUserInfo(req, res) {
     const id = req.params.id
     //pegar id de usuario pelo token
     const token = req.header('auth-token')
-    
+
     try {
         inputValidators.paramIdValidator(id)
     } catch (err) {
@@ -29,19 +29,20 @@ async function getUserInfo(req, res) {
 }
 async function updateUserInfo(req, res) {
 
+    const {id, name, email, password, confirmPassword} = req.body
     const token = req.header('auth-token')   
 
     try {
         const UserServicesInstance = new UserServices()
-        const { updatedUser, errorMessage } = await UserServicesInstance.serviceUserUpdate(token, req.body)
-        if (errorMessage) {
-            return res.status(400).json({ error: errorMessage })
-        }
+        const { updatedUser } = await UserServicesInstance.serviceUserUpdate(id, name, email, password, confirmPassword, token)
 
-        return res.json({ error: null, msg: 'Dado atualizado com sucesso.', data: updatedUser })
+        return res.json({ error: null, message: 'Dado atualizado com sucesso.', data: updatedUser })
 
     } catch (err) {
-        return res.status(400).json({ error: 'falha na alteração dos dados' })
+        if(!err.status){
+            return res.status(500).json( { error: { code: 'UNKNOWN_ERROR', message: 'An unknown error occurred.' } })
+        }
+        return res.status(err.status).json( { error: { code: err.code, message: err.message } })
     }
 
 }

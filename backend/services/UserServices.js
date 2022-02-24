@@ -31,30 +31,30 @@ module.exports = class UserServices{
             throw ({ status: 422, code: 'FAIL_OPERATION', message: 'usuário não encontrado' })
         }
     }
-    async serviceUserUpdate(token, body){
+    async serviceUserUpdate(id, name, email, password, confirmPassword, token){
 
-        console.log('body service: '+body.name)
+        console.log('body service: '+ name)
         const user = await getUserByToken(token)
 
         //verifica se o ID de usuário é igual ao token ID(prevenir manipulação de token durante requests)
         const userId = user._id.toString()
-        const userReqId = body.id
+        const userReqId = id
         console.log('userId:  ' + userId + ' e userReqId: ' + userReqId)
         if (userId != userReqId) {
             console.log('passei userId != userReqId: ' + userId + ' != ' + userReqId)
-            return { errorMessage: 'Acesso Negado!' }
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Acesso não autorizado!' })
         }
         //Objeto de update do usuário
         const updateData = {
-            name: body.name,
-            email: body.email
+            name,
+            email
         }
-        if (body.password != body.confirmPassword) {
-            return { errorMessage: 'As senhas não conferem!' }
-        } else if (body.password == body.confirmPassword && body.password != null) {
+        if (password != confirmPassword) {
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'As senhas não conferem!' })
+        } else if (password == confirmPassword && password != null) {
             //change password
             const salt = await bcrypt.genSalt(12)
-            const passwordHash = await bcrypt.hash(body.password, salt)
+            const passwordHash = await bcrypt.hash(password, salt)
             //adiciona senha ao update
             updateData.password = passwordHash
         }
@@ -64,7 +64,7 @@ module.exports = class UserServices{
             return { updatedUser } // {new true} retorna os dados atualizados, false retorna antes de atualizar(padrão)
 
         } catch (err) {
-            return { errorMessage: 'Erro, tente novamente mais tarde' }
+            throw ({ status: 422, code: 'FAIL_OPERATION', message: 'Erro, tente novamente mais tarde' })
         }
 
     }
