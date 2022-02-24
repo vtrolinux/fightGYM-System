@@ -6,7 +6,6 @@ module.exports = class UserServices{
     constructor(){}
 
     async serviceGetUserInfo(id, token) {
-        console.log('bati user service')
         console.log('id: '+id)
  
         const user = await getUserByToken(token)

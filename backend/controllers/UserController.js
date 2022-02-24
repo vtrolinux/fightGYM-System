@@ -1,5 +1,6 @@
 const UserServices = require('../services/UserServices')
 const inputValidators = require('../validations/inputValidators')
+const userValidators = require('../validations/userValidators')
 
 async function getUserInfo(req, res) {
 
@@ -30,7 +31,14 @@ async function getUserInfo(req, res) {
 async function updateUserInfo(req, res) {
 
     const {id, name, email, password, confirmPassword} = req.body
-    const token = req.header('auth-token')   
+    const token = req.header('auth-token')
+
+    try {
+        inputValidators.mongoIdValidator(id)
+        userValidators.updateValidator(name, email, password, confirmPassword)
+    } catch (err) {
+        return res.status(422).json({ error: err.message })
+    }
 
     try {
         const UserServicesInstance = new UserServices()
