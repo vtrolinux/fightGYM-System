@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
             'Please add a valid email address.',]
     },
     password: {type: String, required:true},
+    role: {
+        type: String,
+        default: 'user'
+    },
     dataReg: {type: Date},
     photoProfile: {type: String},
     twoFactorsEnable: {type: Boolean},
